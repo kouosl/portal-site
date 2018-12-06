@@ -91,13 +91,6 @@ class AuthController extends DefaultController
                     ]);
                 }
             }
-            else {
-                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                if($model->load(Yii::$app->getRequest()->getBodyParams(),'') && $model->login())
-                    return ['access_token' => Yii::$app->user->identity->getAuthKey(),'status' => true];
-                else
-                    return ['access_token' => '','status' => false];
-            }
         }
         else{
             if (!Yii::$app->user->isGuest) {
