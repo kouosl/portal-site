@@ -1,5 +1,5 @@
 <?php
-namespace kouosl\user\controllers\api;
+namespace kouosl\site\controllers\api;
 class DefaultController extends \kouosl\base\controllers\api\BaseController
 {
     public function actionIndex(){
