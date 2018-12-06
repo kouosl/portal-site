@@ -1,5 +1,5 @@
 <?php
-namespace kouosl\site\controllers\backend;
+namespace kouosl\site\controllers\api;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
