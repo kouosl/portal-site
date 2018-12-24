@@ -73,6 +73,22 @@ class Module extends \kouosl\base\Module
     {
         return Yii::t('site/' . $category, $message, $params, $language);
     }
-
-
+	
+	public static function initRules(){
+        
+        return $rules = [
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => [
+                    'site/auth',
+                ],
+                'tokens' => [
+                    '{id}' => '<id:\\w+>'
+                ],
+                'patterns' => [
+                    'POST login' => 'auth/login'
+                ]
+            ],
+        ] ;
+    }
 }
