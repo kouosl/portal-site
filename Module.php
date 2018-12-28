@@ -35,6 +35,7 @@ class Module extends \kouosl\base\Module
 
                 $behaviors['authenticator'] = [
                     'class' => CompositeAuth::className(),
+					'except' => ['auth/login'],
                     'authMethods' => [
                         HttpBasicAuth::className(),
                         HttpBearerAuth::className(),
