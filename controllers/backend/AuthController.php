@@ -1,12 +1,10 @@
 <?php
 namespace kouosl\site\controllers\backend;
-
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use kouosl\site\models\LoginForm;
 use \kouosl\site\models\Setting;
-
 /**
  * Site controller
  */
@@ -44,7 +42,6 @@ class AuthController extends DefaultController
         ]);
        
     }
-
     /**
      * @inheritdoc
      */
@@ -62,7 +59,6 @@ class AuthController extends DefaultController
         if ($action->id == 'login') {
             $this->enableCsrfValidation = false;
         }
-
         return parent::beforeAction($action);
     }
     /**
@@ -84,7 +80,6 @@ class AuthController extends DefaultController
     {
         $request = Yii::$app->request;
         if ($request->isPost) {
-
             $model = new LoginForm();
             $response =  $request->post('response');
             if($response == null){
@@ -95,15 +90,7 @@ class AuthController extends DefaultController
                         'model' => $model,
                     ]);
                 }
-            }
-            else {
-                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                if($model->load(Yii::$app->getRequest()->getBodyParams(),'') && $model->login())
-                    return ['access_token' => Yii::$app->user->identity->getAuthKey(),'status' => true];
-                else
-                    return ['access_token' => '','status' => false];
-
-            }
+            } 
         }
         else{
             if (!Yii::$app->user->isGuest) {
@@ -120,7 +107,6 @@ class AuthController extends DefaultController
             }
         }
     }
-
     /**
      * Logout action.
      *
@@ -129,10 +115,8 @@ class AuthController extends DefaultController
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
-
     public function actionLang($lang){
         
        yii::$app->session->set('lang',$lang);
