@@ -35,6 +35,7 @@ class Module extends \kouosl\base\Module
 
                 $behaviors['authenticator'] = [
                     'class' => CompositeAuth::className(),
+					'except' => ['auth/login'],
                     'authMethods' => [
                         HttpBasicAuth::className(),
                         HttpBearerAuth::className(),
@@ -73,6 +74,22 @@ class Module extends \kouosl\base\Module
     {
         return Yii::t('site/' . $category, $message, $params, $language);
     }
-
-
+	
+	public static function initRules(){
+        
+        return $rules = [
+            [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => [
+                    'site/auth',
+                ],
+                'tokens' => [
+                    '{id}' => '<id:\\w+>'
+                ],
+                'patterns' => [
+                    'POST login' => 'auth/login'
+                ]
+            ],
+        ] ;
+    }
 }
