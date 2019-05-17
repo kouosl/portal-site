@@ -4,6 +4,8 @@ namespace kouosl\site;
 
 use Yii;
 
+use yii\filters\auth\CompositeAuth;
+
 class Module extends \kouosl\base\Module{
     public $controllerNamespace = '';
 
@@ -11,6 +13,7 @@ class Module extends \kouosl\base\Module{
     {
         parent::init();
         $this->registerTranslations();
+
     }
   
     public function registerTranslations()
@@ -42,9 +45,26 @@ class Module extends \kouosl\base\Module{
                     '{id}' => '<id:\\w+>'
                 ],
                 'patterns' => [
-                    'POST login' => 'auth/login'
+                    'POST login' => 'auth/login',
+                    'POST signup' => 'auth/signup'
                 ]
             ],
         ] ;
+    }
+
+/**
+ * 
+ * base behaviors override method
+ * 
+ */
+    public function behaviors(){
+
+		$behaviors = parent::behaviors();
+
+    	$behaviors['authenticator'] = [
+			'class' => CompositeAuth::className(),
+			'except' => ['auth/login'],
+        ];
+		return $behaviors;
     }
 }
