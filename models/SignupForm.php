@@ -30,10 +30,16 @@ class SignupForm extends Model
             ['email', 'unique', 'targetClass' => '\kouosl\user\models\User', 'message' => 'This email address has already been taken.'],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
-            ['verifyCode', 'captcha','captchaAction'=>'/site/auth/captcha']
+            
 
         ];
     }
+    /**
+     * for rules() 
+     * 
+     *  ['verifyCode', 'captcha','captchaAction'=>'/site/auth/captcha']
+     */
+
     /**
      * Signs user up.
      *
