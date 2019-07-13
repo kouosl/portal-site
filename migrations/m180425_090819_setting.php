@@ -30,17 +30,25 @@ class m180425_090819_setting extends Migration
             'setting_key' => 'about',
             'value' => 'true',
         ]);
+
         $this->insert('setting', [
             'setting_key' => 'login',
             'value' => 'true',
         ]);
+
         $this->insert('setting', [
             'setting_key' => 'contact',
             'value' => 'true',
         ]);
+
         $this->insert('setting', [
             'setting_key' => 'language',
-            'value' => 'EN',
+            'value' => 'en-US',
+        ]);
+
+	$this->insert('setting', [
+            'setting_key' => 'title',
+            'value' => 'Portal',
         ]);
 
     }
