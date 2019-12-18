@@ -20,6 +20,11 @@ class m180425_090819_setting extends Migration
             'setting_key' => $this->string(200)->notNull(),
 			'value' => $this->string(200)->notNull(),
         ], $tableOptions);
+	
+	$this->insert('setting', [
+            'setting_key' => 'home',
+            'value' => '1',
+        ]);
 
         $this->insert('setting', [
             'setting_key' => 'signup',
@@ -43,7 +48,7 @@ class m180425_090819_setting extends Migration
 
         $this->insert('setting', [
             'setting_key' => 'language',
-            'value' => 'en-US',
+            'value' => 'tr-TR',
         ]);
 
 	$this->insert('setting', [
