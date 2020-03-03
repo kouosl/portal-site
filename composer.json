@@ -1,22 +1,23 @@
 {
-    "name": "kouosl/portal-site",
-    "description": "Site module for KOUOSL PORTAL",
-    "type": "yii2-extension",
-    "keywords": ["yii2", "yii 2", "samples", "sample", "module", "modules"],
-    "license": "BSD-3-Clause",
-    "authors": [
-        {
-            "name": "İbrahim Aşık",
-            "email": "info@kouosl.org"
-        },
-        {
-            "name": "Ekrem HATİPOĞLU",
-            "email": "ekrem.hatipoglu@outlook.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "kouosl\\site\\": ""
-        }
-    }
+	"name" : "portalium/portalium-site",
+	"description" : "Portalium Site Module",
+	"type" : "portalium-core",
+	"keywords" : ["portalium", "module", "yii2", "yii", "php"],
+	"license": "MIT",
+	"homepage" : "http://portalium.dev",
+	"authors" : [
+		{
+			"name" : "Uğur YILDIZ",
+			"email" : "yildiz@diginova.com.tr",
+			"homepage" : "http://uguryildiz.net"
+		}
+	],
+	"support" : {
+		"issues" : "https://github.com/portalium/portalium-site/issues"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"portalium\\site\\" : "src/"
+		}
+	}
 }
