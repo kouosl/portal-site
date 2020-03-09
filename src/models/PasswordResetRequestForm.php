@@ -1,9 +1,9 @@
 <?php
-namespace kouosl\site\models;
+namespace portalium\site\models;
 
 use Yii;
 use yii\base\Model;
-use kouosl\user\models\User;
+use portalium\user\models\User;
 
 /**
  * Password reset request form

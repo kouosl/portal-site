@@ -4,12 +4,13 @@ namespace kouosl\site\controllers\frontend;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use kouosl\site\models\Setting;
-use kouosl\content\models\Content;
+use portalium\site\models\Setting;
+use portalium\content\models\Content;
+use portalium\web\Controller as WebController;
 /*
  * Home controller
  */
-class HomeController extends DefaultController
+class HomeController extends WebController
 {
    
     public function behaviors()
@@ -30,11 +31,17 @@ class HomeController extends DefaultController
 
     public function actionIndex()
     {
-            $id = Setting::findOne(['setting_key'=>'home']);
+        $id = Setting::findOne(['setting_key'=>'home']);
 
-            return $this->render('index',[
-                'model' =>  $this->findModel($id)
-            ]);
+        return $this->render('index',[
+            'model' =>  $this->findModel($id)
+        ]);
+    }
+
+    public function actionLang($lang)
+    {
+        yii::$app->session->set('lang',$lang);
+        return $this->goBack(Yii::$app->request->referrer);
     }
 
     protected function findModel($id)
@@ -44,8 +51,4 @@ class HomeController extends DefaultController
         }
 
     }
-
-
-    
 }
-

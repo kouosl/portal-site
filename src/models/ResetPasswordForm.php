@@ -1,9 +1,9 @@
 <?php
-namespace kouosl\site\models;
+namespace portalium\site\models;
 
 use yii\base\Model;
 use yii\base\InvalidParamException;
-use kouosl\user\models\User;
+use portalium\user\models\User;
 
 /**
  * Password reset form

@@ -1,6 +1,6 @@
 <?php
 
-namespace kouosl\site\models;
+namespace portalium\site\models;
 
 use Yii;
 use yii\base\Model;

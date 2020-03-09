@@ -1,21 +1,21 @@
 <?php
-namespace kouosl\site\controllers\backend;
+namespace portalium\site\controllers\backend;
+
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use kouosl\site\models\LoginForm;
-use \kouosl\site\models\Setting;
+use portalium\site\models\LoginForm;
+use portalium\web\Controller as WebController;
 /**
  * Site controller
  */
-class AuthController extends DefaultController
+class AuthController extends WebController
 {
     /**
      * @inheritdoc
      */
     public function behaviors()
     {
-       
         return array_merge(
             parent::behaviors(),
             [
@@ -23,7 +23,7 @@ class AuthController extends DefaultController
                     'class' => AccessControl::className(),
                     'rules' => [
                         [
-                            'actions' => ['login', 'error','lang'],
+                            'actions' => ['login', 'error'],
                             'allow' => true,
                         ],
                         [
@@ -42,25 +42,7 @@ class AuthController extends DefaultController
         ]);
        
     }
-    /**
-     * @inheritdoc
-     */
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
-    }
-    public function beforeAction($action) {
-        
-      
-        if ($action->id == 'login') {
-            $this->enableCsrfValidation = false;
-        }
-        return parent::beforeAction($action);
-    }
+
     /**
      * Displays homepage.
      *
@@ -68,7 +50,7 @@ class AuthController extends DefaultController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->redirect('login');
     }
    
     /**
@@ -78,35 +60,20 @@ class AuthController extends DefaultController
      */
     public function actionLogin()
     {
-        $request = Yii::$app->request;
-        if ($request->isPost) {
-            $model = new LoginForm();
-            $response =  $request->post('response');
-            if($response == null){
-                if ($model->load(Yii::$app->request->post()) && $model->login()) {
-                    return $this->goBack();
-                } else {
-                    return $this->render('login', [
-                        'model' => $model,
-                    ]);
-                }
-            } 
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
         }
-        else{
-            if (!Yii::$app->user->isGuest) {
-                return $this->goHome();
-            }
-    
-            $model = new LoginForm();
-            if ($model->load(Yii::$app->request->post()) && $model->login()) {
-                return $this->goBack();
-            } else {
-                return $this->render('login', [
-                    'model' => $model,
-                ]);
-            }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        } else {
+            return $this->render('login', [
+                'model' => $model,
+            ]);
         }
     }
+
     /**
      * Logout action.
      *
@@ -115,11 +82,6 @@ class AuthController extends DefaultController
     public function actionLogout()
     {
         Yii::$app->user->logout();
-        return $this->goHome();
-    }
-    public function actionLang($lang){
-        
-       yii::$app->session->set('lang',$lang);
         return $this->goHome();
     }
 }

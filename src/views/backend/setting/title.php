@@ -9,5 +9,5 @@ use yii\helpers\Html;
 
 <tr id="row-title">
         <td class="text-center">Title</td>
-        <td class="text-center"><?= Html::input('text',$title,$title, $options=['class' => 'make-switch' ,'onblur' => 'edit({ title: $(this).val() , key : \'title\'},\'title\')']) ?>
+        <td class="text-center"><?= Html::input('text',$title, $title, $options=['class' => 'make-switch' ,'onblur' => 'edit({ title: $(this).val() , key : \'title\'},\'title\')']) ?>
 </tr>

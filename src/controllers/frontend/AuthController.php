@@ -1,22 +1,25 @@
 <?php
-namespace kouosl\site\controllers\frontend;
-use yii\helpers\ArrayHelper;
+namespace portalium\site\controllers\frontend;
+
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use kouosl\site\models\LoginForm;
-use kouosl\site\models\PasswordResetRequestForm;
-use kouosl\site\models\ResetPasswordForm;
-use kouosl\site\models\SignupForm;
-use kouosl\site\models\ContactForm;
-use kouosl\site\models\Setting;
+use yii\helpers\ArrayHelper;
 use yii\filters\Cors;
+use portalium\site\models\LoginForm;
+use portalium\site\models\PasswordResetRequestForm;
+use portalium\site\models\ResetPasswordForm;
+use portalium\site\models\SignupForm;
+use portalium\site\models\ContactForm;
+use portalium\site\models\Setting;
+use portalium\web\Controller as WebController;
+
 /**
  * Site controller
  */
-class AuthController extends DefaultController
+class AuthController extends WebController
 {
     public function beforeAction($action) {
        
@@ -25,34 +28,7 @@ class AuthController extends DefaultController
         } 
         return parent::beforeAction($action);
     }
-    
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                    'access' => [
-                        'class' => AccessControl::className(),
-                        'only' => ['logout', 'signup','contact','about'],
-                        'rules' => [
-                            [
-                                'actions' => ['signup','contact','about'],
-                                'allow' => true,
-                                'roles' => ['?'],
-                            ],
-                            [
-                                'actions' => ['logout','contact','about'],
-                                'allow' => true,
-                                'roles' => ['@'],
-                            ],
-                     
-                        ],
-                    ]
-        ]);
-    }
+
 
     /**
      * @inheritdoc
@@ -87,46 +63,19 @@ class AuthController extends DefaultController
      */
     public function actionLogin()
     {
-
-        if(Setting::findOne(['setting_key' => 'login'])->value === 'true'){
-        $request = Yii::$app->request;
-        if ($request->isPost) {
-
-            $model = new LoginForm();
-            $response =  $request->post('response');
-            if($response == null){
-                if ($model->load(Yii::$app->request->post()) && $model->login()) {
-                    return $this->goBack();
-                } else {
-                    return $this->render('login', [
-                        'model' => $model,
-                    ]);
-                }
-            }
-            else {
-                \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-                if($model->load(Yii::$app->getRequest()->getBodyParams(),'') && $model->login())
-                    return ['access_token' => Yii::$app->user->identity->getAuthKey(),'status' => true];
-                else
-                    return ['access_token' => '','status' => false];
-
-            }
+        if (!Yii::$app->user->isGuest)
+        {
+            return $this->goHome();
         }
-        else{
-            if (!Yii::$app->user->isGuest) {
-                return $this->goHome();
-            }
-    
-            $model = new LoginForm();
-            if ($model->load(Yii::$app->request->post()) && $model->login()) {
-                return $this->goBack();
-            } else {
-                return $this->render('login', [
-                    'model' => $model,
-                ]);
-            }
+
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        } else {
+            return $this->render('login', [
+                'model' => $model,
+            ]);
         }
-    }
     }
 
     /**
@@ -136,9 +85,7 @@ class AuthController extends DefaultController
      */
     public function actionLogout()
     {
-        
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 
@@ -149,22 +96,23 @@ class AuthController extends DefaultController
      */
     public function actionContact()
     {
-        if(Setting::findOne(['setting_key' => 'contact'])->value === 'true'){
+        if(Setting::findOne(['setting_key' => 'contact'])->value === 'true')
+        {
+            $model = new ContactForm();
+            if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+                if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
+                    Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+                } else {
+                    Yii::$app->session->setFlash('error', 'There was an error sending your message.');
+                }
 
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+                return $this->refresh();
             } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
+                return $this->render('contact', [
+                    'model' => $model,
+                ]);
             }
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }}
+        }
     }
 
     /**
@@ -174,10 +122,8 @@ class AuthController extends DefaultController
      */
     public function actionAbout()
     {
-        if(Setting::findOne(['setting_key' => 'login'])->value === 'true'){
-
-        return $this->render('about');
-        }
+        if(Setting::findOne(['setting_key' => 'login'])->value === 'true')
+            return $this->render('about');
     }
 
     /**
@@ -187,19 +133,19 @@ class AuthController extends DefaultController
      */
     public function actionSignup()
     {
-        if(Setting::findOne(['setting_key' => 'login'])->value === 'true'){
-
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
+        if(Setting::findOne(['setting_key' => 'signup'])->value === 'true')
+        {
+            $model = new SignupForm();
+            if ($model->load(Yii::$app->request->post())) {
+                if ($user = $model->signup()) {
+                    if (Yii::$app->getUser()->login($user)) {
+                        return $this->goHome();
+                    }
                 }
             }
-        }
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
+            return $this->render('signup', [
+                'model' => $model,
+            ]);
         }
     }
 
@@ -250,10 +196,5 @@ class AuthController extends DefaultController
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
-    }
-
-    public function actionLang($lang){
-        yii::$app->session->set('lang',$lang);
-        return $this->goHome();
     }
 }

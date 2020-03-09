@@ -1,11 +1,11 @@
 <?php
 
-namespace kouosl\site\models;
+namespace portalium\site\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use kouosl\site\models\Settings;
+use portalium\site\models\Settings;
 
 /**
  * SettingsSearch represents the model behind the search form of `kouosl\site\models\Settings`.

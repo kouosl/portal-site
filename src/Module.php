@@ -1,36 +1,23 @@
 <?php
 
-namespace kouosl\site;
+namespace portalium\site;
 
 use Yii;
 
 use yii\filters\auth\CompositeAuth;
 
-class Module extends \kouosl\base\Module{
-    public $controllerNamespace = '';
-
-    public function init()
+class Module extends \portalium\base\Module
+{
+    public static function moduleInit()
     {
-        parent::init();
-        $this->registerTranslations();
-
-    }
-  
-    public function registerTranslations()
-    {
-        Yii::$app->i18n->translations['site/*'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'sourceLanguage' => 'en-US',
-            'basePath' => '@kouosl/site/messages',
-            'fileMap' => [
-                'site/site' => 'site.php',
-            ],
-        ];
+        self::registerTranslation('site/*','@site/messages',[
+            'site/site' => 'site.php',
+        ]);
     }
 
-    public static function t($category, $message, $params = [], $language = null)
+    public static function t($message, array $params = [])
     {
-        return Yii::t('site/' . $category, $message, $params, $language);
+        return parent::t('site', $message, $params);
     }
 
     public static function initRules()

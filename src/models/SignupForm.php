@@ -1,8 +1,9 @@
 <?php
-namespace kouosl\site\models;
+namespace portalium\site\models;
+
 use kouosl\site\Module;
 use yii\base\Model;
-use kouosl\user\models\User;
+use portalium\user\models\User;
 /**
  * Signup form
  */
