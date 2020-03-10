@@ -3,7 +3,6 @@
 namespace portalium\site;
 
 use Yii;
-
 use yii\filters\auth\CompositeAuth;
 
 class Module extends \portalium\base\Module
