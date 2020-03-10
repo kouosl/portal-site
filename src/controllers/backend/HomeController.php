@@ -1,5 +1,5 @@
 <?php
-namespace kouosl\site\controllers\backend;
+namespace portalium\site\controllers\backend;
 
 use Yii;
 use yii\filters\VerbFilter;
