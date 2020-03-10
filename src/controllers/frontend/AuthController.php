@@ -21,15 +21,6 @@ use portalium\web\Controller as WebController;
  */
 class AuthController extends WebController
 {
-    public function beforeAction($action) {
-       
-        if ($action->id == 'login') {
-            $this->enableCsrfValidation = false;
-        } 
-        return parent::beforeAction($action);
-    }
-
-
     /**
      * @inheritdoc
      */
