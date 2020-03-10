@@ -16,7 +16,7 @@ class Module extends \portalium\base\Module
 
     public static function t($message, array $params = [])
     {
-        return parent::t('site', $message, $params);
+        return parent::coreT('site', $message, $params);
     }
 
     public static function initRules()
