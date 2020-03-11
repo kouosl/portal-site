@@ -5,9 +5,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use portalium\web\Controller as WebController;
-/*
- * Home controller
- */
+
 class HomeController extends WebController
 {
     public function actionIndex()
@@ -17,7 +15,7 @@ class HomeController extends WebController
 
     public function actionLang($lang)
     {
-        yii::$app->session->set('lang',$lang);
-        return $this->goBack(Yii::$app->request->referrer);
+        Yii::$app->session->set('lang',$lang);
+        $this->goBack(Yii::$app->request->referrer);
     }
 }

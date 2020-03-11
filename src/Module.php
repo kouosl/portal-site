@@ -1,5 +1,4 @@
 <?php
-
 namespace portalium\site;
 
 use Yii;
@@ -9,7 +8,7 @@ class Module extends \portalium\base\Module
 {
     public static function moduleInit()
     {
-        self::registerTranslation('site/*','@site/messages',[
+        self::registerTranslation('site','@portalium/site/messages',[
             'site/site' => 'site.php',
         ]);
     }
@@ -38,11 +37,6 @@ class Module extends \portalium\base\Module
         ] ;
     }
 
-/**
- * 
- * base behaviors override method
- * 
- */
     public function behaviors(){
 
 		$behaviors = parent::behaviors();
