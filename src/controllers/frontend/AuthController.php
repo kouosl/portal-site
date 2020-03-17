@@ -1,4 +1,5 @@
 <?php
+
 namespace portalium\site\controllers\frontend;
 
 use Yii;
@@ -14,22 +15,32 @@ use portalium\site\models\ResetPasswordForm;
 use portalium\site\models\SignupForm;
 use portalium\site\models\ContactForm;
 use portalium\site\models\Setting;
+use portalium\site\Module;
 use portalium\web\Controller as WebController;
 
-/**
- * Site controller
- */
 class AuthController extends WebController
 {
-    /**
-     * @inheritdoc
-     */
+    public function behaviors(){
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['login', 'signup','captcha'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                ],
+            ],
+        ];
+    }
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
@@ -37,21 +48,11 @@ class AuthController extends WebController
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return mixed
-     */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->redirect('login');
     }
-  
-    /**
-     * Logs in a user.
-     *
-     * @return mixed
-     */
+
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest)
@@ -69,62 +70,15 @@ class AuthController extends WebController
         }
     }
 
-    /**
-     * Logs out the current user.
-     *
-     * @return mixed
-     */
     public function actionLogout()
     {
         Yii::$app->user->logout();
         return $this->goHome();
     }
 
-    /**
-     * Displays contact page.
-     *
-     * @return mixed
-     */
-    public function actionContact()
-    {
-        if(Setting::findOne(['setting_key' => 'contact'])->value === 'true')
-        {
-            $model = new ContactForm();
-            if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-                if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                    Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-                } else {
-                    Yii::$app->session->setFlash('error', 'There was an error sending your message.');
-                }
-
-                return $this->refresh();
-            } else {
-                return $this->render('contact', [
-                    'model' => $model,
-                ]);
-            }
-        }
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return mixed
-     */
-    public function actionAbout()
-    {
-        if(Setting::findOne(['setting_key' => 'login'])->value === 'true')
-            return $this->render('about');
-    }
-
-    /**
-     * Signs user up.
-     *
-     * @return mixed
-     */
     public function actionSignup()
     {
-        if(Setting::findOne(['setting_key' => 'signup'])->value === 'true')
+        if(Setting::findOne(['key' => 'page_signup'])->value === 'true')
         {
             $model = new SignupForm();
             if ($model->load(Yii::$app->request->post())) {
@@ -138,23 +92,20 @@ class AuthController extends WebController
                 'model' => $model,
             ]);
         }
+
+        return $this->goHome();
     }
 
-    /**
-     * Requests password reset.
-     *
-     * @return mixed
-     */
     public function actionRequestPasswordReset()
     {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                Yii::$app->session->setFlash('success', Module::t('Check your email for further instructions.'));
 
                 return $this->goHome();
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('error', Module::t('Sorry, we are unable to reset password for the provided email address.'));
             }
         }
 
@@ -163,13 +114,6 @@ class AuthController extends WebController
         ]);
     }
 
-    /**
-     * Resets password.
-     *
-     * @param string $token
-     * @return mixed
-     * @throws BadRequestHttpException
-     */
     public function actionResetPassword($token)
     {
         try {
@@ -179,7 +123,7 @@ class AuthController extends WebController
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
+            Yii::$app->session->setFlash('success', Module::t('New password saved.'));
 
             return $this->goHome();
         }

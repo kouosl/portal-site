@@ -11,9 +11,6 @@ use portalium\site\models\SignupForm;
 use portalium\site\models\LoginForm;
 use portalium\rest\Controller as RestController;
 
-/**
- * Site controller
- */
 class AuthController extends RestController
 {
     public function actionLogin()

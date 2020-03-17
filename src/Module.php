@@ -9,7 +9,7 @@ class Module extends \portalium\base\Module
     public static function moduleInit()
     {
         self::registerTranslation('site','@portalium/site/messages',[
-            'site/site' => 'site.php',
+            'site' => 'site.php',
         ]);
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace portalium\site\controllers\backend;
 
 use Yii;
@@ -6,14 +7,9 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use portalium\site\models\LoginForm;
 use portalium\web\Controller as WebController;
-/**
- * Site controller
- */
+
 class AuthController extends WebController
 {
-    /**
-     * @inheritdoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -43,21 +39,11 @@ class AuthController extends WebController
        
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         return $this->redirect('login');
     }
-   
-    /**
-     * Login action.
-     *
-     * @return string
-     */
+
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -74,11 +60,6 @@ class AuthController extends WebController
         }
     }
 
-    /**
-     * Logout action.
-     *
-     * @return string
-     */
     public function actionLogout()
     {
         Yii::$app->user->logout();

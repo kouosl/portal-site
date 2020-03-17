@@ -1,21 +1,16 @@
 <?php
+
 namespace portalium\site\models;
 
 use Yii;
 use yii\base\Model;
+use portalium\site\Module;
 use portalium\user\models\User;
 
-/**
- * Password reset request form
- */
 class PasswordResetRequestForm extends Model
 {
     public $email;
 
-
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return [
@@ -23,21 +18,15 @@ class PasswordResetRequestForm extends Model
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'exist',
-                'targetClass' => '\kouosl\user\models\User',
+                'targetClass' => '\portalium\user\models\User',
                 'filter' => ['status' => User::STATUS_ACTIVE],
-                'message' => 'There is no user with this email address.'
+                'message' => Module::t('There is no user with this email address.')
             ],
         ];
     }
 
-    /**
-     * Sends an email with a link, for resetting the password.
-     *
-     * @return bool whether the email was send
-     */
     public function sendEmail()
     {
-        /* @var $user User */
         $user = User::findOne([
             'status' => User::STATUS_ACTIVE,
             'email' => $this->email,
@@ -60,9 +49,9 @@ class PasswordResetRequestForm extends Model
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
                 ['user' => $user]
             )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setFrom([Setting::findOne(['key' => 'email_address'])->value => Setting::findOne(['key' => 'email_display_name'])->value])
             ->setTo($this->email)
-            ->setSubject('Password reset for ' . Yii::$app->name)
+            ->setSubject(Module::t('Password reset for {email_display_name}!',['email_display_name' => Setting::findOne(['key' => 'email_display_name'])->value]))
             ->send();
     }
 }
