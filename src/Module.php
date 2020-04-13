@@ -12,6 +12,8 @@ class Module extends \portalium\base\Module
         self::registerTranslation('site','@portalium/site/messages',[
             'site' => 'site.php',
         ]);
+
+        Yii::$app->mailer->setViewPAth('@portalium/site/mail');
     }
 
     public static function t($message, array $params = [])

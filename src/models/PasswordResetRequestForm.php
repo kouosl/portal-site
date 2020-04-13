@@ -51,7 +51,7 @@ class PasswordResetRequestForm extends Model
         }
 
         return Yii::$app
-            ->mail
+            ->mailer
             ->compose(
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
                 ['user' => $user]
