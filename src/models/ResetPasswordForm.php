@@ -33,6 +33,13 @@ class ResetPasswordForm extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'password' => Module::t('Password'),
+        ];
+    }
+
     public function resetPassword()
     {
         $user = $this->_user;

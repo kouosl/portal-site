@@ -25,6 +25,15 @@ class LoginForm extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'username' => Module::t('Username'),
+            'password' => Module::t('Password'),
+            'rememberMe' => Module::t('Remember Me'),
+        ];
+    }
+
     public function validatePassword($attribute, $params)
     {
         if (!$this->hasErrors()) {

@@ -25,6 +25,13 @@ class PasswordResetRequestForm extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'email' => Module::t('Email'),
+        ];
+    }
+
     public function sendEmail()
     {
         $user = User::findOne([
@@ -44,7 +51,7 @@ class PasswordResetRequestForm extends Model
         }
 
         return Yii::$app
-            ->mailer
+            ->mail
             ->compose(
                 ['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'],
                 ['user' => $user]

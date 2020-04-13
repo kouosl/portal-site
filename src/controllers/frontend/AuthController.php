@@ -30,7 +30,7 @@ class AuthController extends WebController
                         'roles' => ['@'],
                     ],
                     [
-                        'actions' => ['login', 'signup','captcha'],
+                        'actions' => ['login', 'signup', 'request-password-reset', 'reset-password', 'captcha'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],

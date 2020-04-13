@@ -15,9 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
                 <?= $form->field($model, 'password')->passwordInput() ?>
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                <?= $form->field($model, 'rememberMe')->checkbox()->label(Module::t('Remember Me')) ?>
                 <div style="color:#999;margin:1em 0">
-                    <? Module::t('If you forgot your password you can {reset-it}.', Html::a(Module::t('reset it'), ['site/auth/request-password-reset'])) ?>
+                    <?= Html::a(Module::t('Forgot Password!'), ['/site/auth/request-password-reset']) ?>
                 </div>
                 <div class="form-group">
                     <?= Html::submitButton(Module::t('Login'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>

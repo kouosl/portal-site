@@ -19,7 +19,7 @@ class m010101_010101_setting extends Migration
 
         $this->insert('setting', [
             'key' => 'title',
-            'value' => 'Portal',
+            'value' => 'Portalium',
         ]);
 
         $this->insert('setting', [

@@ -27,8 +27,17 @@ class SignupForm extends Model
             ['email', 'unique', 'targetClass' => '\portalium\user\models\User', 'message' => Module::t('This email address has already been taken.')],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
-            
+        ];
+    }
 
+    public function attributeLabels()
+    {
+        return [
+            'username' => Module::t('Username'),
+            'email' => Module::t('Email'),
+            'password' => Module::t('Password'),
+            'verifyCode' => Module::t('Verify Code'),
+            'rememberMe' => Module::t('Remember Me'),
         ];
     }
 

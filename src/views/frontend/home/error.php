@@ -11,5 +11,5 @@ $this->title = $name;
         <?= nl2br(Html::encode($message)) ?>
     </div>
     <p><?= Module::t('The above error occurred while the Web server was processing your request.') ?></p>
-    <p><?= Module::t('Please contact us if you think this is a server error. Thank you.') ?></p>
+    <p><?= Module::t('Please contact us if you think this is a server error.') ?></p>
 </div>
