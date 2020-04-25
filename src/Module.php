@@ -4,16 +4,33 @@ namespace portalium\site;
 
 use Yii;
 use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\HttpBasicAuth;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\auth\QueryParamAuth;
 
 class Module extends \portalium\base\Module
 {
+    public $apiRules = [
+        [
+            'class' => 'yii\rest\UrlRule',
+            'controller' => [
+                'site/auth',
+            ],
+            'tokens' => [
+                '{id}' => '<id:\\w+>'
+            ],
+            'patterns' => [
+                'POST login' => 'auth/login',
+                'POST signup' => 'auth/signup'
+            ]
+        ],
+    ];
+
     public static function moduleInit()
     {
         self::registerTranslation('site','@portalium/site/messages',[
             'site' => 'site.php',
         ]);
-
-        Yii::$app->mailer->setViewPAth('@portalium/site/mail');
     }
 
     public static function t($message, array $params = [])
@@ -21,33 +38,12 @@ class Module extends \portalium\base\Module
         return parent::coreT('site', $message, $params);
     }
 
-    public static function initRules()
+    public static function settingT($category, $message, array $params = [])
     {
-        return $rules = [
-            [
-                'class' => 'yii\rest\UrlRule',
-                'controller' => [
-                    'site/auth',
-                ],
-                'tokens' => [
-                    '{id}' => '<id:\\w+>'
-                ],
-                'patterns' => [
-                    'POST login' => 'auth/login',
-                    'POST signup' => 'auth/signup'
-                ]
-            ],
-        ] ;
-    }
+        self::registerTranslation($category,'@portalium/'. $category .'/messages',[
+            $category => $category.'.php',
+        ]);
 
-    public function behaviors(){
-
-		$behaviors = parent::behaviors();
-
-    	$behaviors['authenticator'] = [
-			'class' => CompositeAuth::className(),
-			'except' => ['auth/login'],
-        ];
-		return $behaviors;
+        return parent::coreT($category, $message, $params);
     }
 }

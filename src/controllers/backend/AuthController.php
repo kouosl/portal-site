@@ -10,35 +10,6 @@ use portalium\web\Controller as WebController;
 
 class AuthController extends WebController
 {
-    public function behaviors()
-    {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'access' => [
-                    'class' => AccessControl::className(),
-                    'rules' => [
-                        [
-                            'actions' => ['login', 'error'],
-                            'allow' => true,
-                        ],
-                        [
-                            'actions' => ['logout', 'index'],
-                            'allow' => true,
-                            'roles' => ['@'],
-                        ],
-                    ],
-                ],
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'logout' => ['post'],
-                    ],
-                ]
-        ]);
-       
-    }
-
     public function actionIndex()
     {
         return $this->redirect('login');

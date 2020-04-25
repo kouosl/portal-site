@@ -12,25 +12,6 @@ use portalium\web\Controller as WebController;
 
 class HomeController extends WebController
 {
-    public function behaviors(){
-        return [
-            'access' => [
-                'class' => \yii\filters\AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'actions' => ['index','error','contact','about','captcha','lang'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                ],
-            ],
-        ];
-    }
-
     public function actionIndex()
     {
         return $this->render('index');
@@ -38,18 +19,18 @@ class HomeController extends WebController
 
     public function actionAbout()
     {
-        if(Setting::findOne(['key' => 'page_login'])->value === 'true')
+        if(Setting::findOne(['name' => 'page::about'])->value)
             return $this->render('about');
         return $this->goHome();
     }
 
     public function actionContact()
     {
-        if(Setting::findOne(['key' => 'page_contact'])->value === 'true')
+        if(Setting::findOne(['name' => 'page::contact'])->value)
         {
             $model = new ContactForm();
             if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-                if ($model->sendEmail(Setting::findOne(['key' => 'email_address'])->value)) {
+                if ($model->sendEmail(Setting::findOne(['name' => 'email::address'])->value)) {
                     Yii::$app->session->setFlash('success', Module::t('Thank you for contacting us. We will respond to you as soon as possible.'));
                 } else {
                     Yii::$app->session->setFlash('error', Module::t('There was an error sending your message.'));

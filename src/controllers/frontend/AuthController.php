@@ -20,24 +20,6 @@ use portalium\web\Controller as WebController;
 
 class AuthController extends WebController
 {
-    public function behaviors(){
-        return [
-            'access' => [
-                'class' => \yii\filters\AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'actions' => ['login', 'signup', 'request-password-reset', 'reset-password', 'captcha'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                ],
-            ],
-        ];
-    }
     public function actions()
     {
         return [
@@ -55,8 +37,7 @@ class AuthController extends WebController
 
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest)
-        {
+        if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
@@ -78,8 +59,7 @@ class AuthController extends WebController
 
     public function actionSignup()
     {
-        if(Setting::findOne(['key' => 'page_signup'])->value === 'true')
-        {
+        if(Setting::findOne(['name' => 'page::signup'])->value) {
             $model = new SignupForm();
             if ($model->load(Yii::$app->request->post())) {
                 if ($user = $model->signup()) {
