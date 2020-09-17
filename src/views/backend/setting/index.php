@@ -6,7 +6,7 @@ use yii\helpers\Json;
 use portalium\site\Module;
 use yii\widgets\ActiveForm;
 use portalium\site\models\Setting;
-use portalium\site\helpers\SettingForm;
+use portalium\site\helpers\ActiveForm as SettingForm;
 
 $this->title = Module::t('Settings');
 $this->params['breadcrumbs'][] = $this->title;

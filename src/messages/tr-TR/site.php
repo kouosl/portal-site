@@ -69,9 +69,15 @@ return [
     'Please Select' => 'Lütfen Seçiniz',
     'Settings saved.' => 'Ayarlar kayedildi.',
     'There are an error. Settings not saved.' => 'Bir hata oluştu. Ayarlar kaydedilemedi.',
+    'API Signup' => 'API Kayıt',
+    'API Login' => 'API Giriş',
+    'Allow' => 'İzin Ver',
+    'Deny' => 'Reddet',
     /* Error */
     'The above error occurred while the Web server was processing your request.' => 'Web sunucusu isteğinizi işlerken yukarıdaki hata oluştu.',
     'Please contact us if you think this is a server error.' => 'Bunun bir sunucu hatası olduğunu düşünüyorsanız lütfen bizimle iletişime geçin.',
     'Username (username) and Password (password) required.' => 'Kullanıcı Adı (username) ve Parola (password) gereklidir.',
-    'Username (username), Password (password) and Email (email) required.' => 'Kullanıcı Adı (username), Parola (password) ve Eposta (email) gereklidir.'
+    'Username (username), Password (password) and Email (email) required.' => 'Kullanıcı Adı (username), Parola (password) ve Eposta (email) gereklidir.',
+    'Signup denied with API' => 'API ile kayıt reddedildi.',
+    'Login denied with API' => 'API ile giriş reddedildi.',
 ];

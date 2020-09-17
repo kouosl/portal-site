@@ -2,6 +2,7 @@
 
 namespace portalium\site\controllers\api;
 
+use portalium\site\models\Setting;
 use portalium\site\Module;
 use Yii;
 use yii\web\HttpException;
@@ -22,22 +23,28 @@ class AuthController extends RestController
 
     public function actionLogin()
     {
-		$model = new LoginForm();
+        if(!Setting::findOne(['name' => 'api::login'])->value)
+            return $this->error(['APILogin' => Module::t("Login denied with API")]);
 
-		if($model->load(Yii::$app->getRequest()->getBodyParams(),'')) {
+        $model = new LoginForm();
+
+        if($model->load(Yii::$app->getRequest()->getBodyParams(),'')) {
             if ($model->login()) {
                 $user = User::findIdentity(Yii::$app->user->identity->id);
                 return ['access-token' => $user->access_token];
             } else
                 return $this->modelError($model);
         }else{
-		    return $this->error(['LoginForm' => Module::t("Username (username) and Password (password) required.")]);
-		}
+            return $this->error(['LoginForm' => Module::t("Username (username) and Password (password) required.")]);
+        }
 	}
 
 	public function actionSignup()
 	{
-		$model = new SignupForm();
+	    if(!Setting::findOne(['name' => 'api::signup'])->value)
+            return $this->error(['APISigup' => Module::t("Signup denied with API")]);
+
+        $model = new SignupForm();
 
         if($model->load(Yii::$app->getRequest()->getBodyParams(),'')) {
             if($user = $model->signup()){

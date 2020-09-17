@@ -1,7 +1,7 @@
 <?php
 
 use yii\db\Migration;
-use portalium\site\models\Setting;
+use portalium\site\models\Form;
 
 class m010101_010101_setting extends Migration
 {
@@ -27,7 +27,7 @@ class m010101_010101_setting extends Migration
             'name' => 'app::title',
             'label' => 'Title',
             'value' => 'Portalium',
-            'type' => Setting::TYPE_INPUTTEXT,
+            'type' => Form::TYPE_INPUTTEXT,
             'config' => ''
         ]);
 
@@ -36,7 +36,7 @@ class m010101_010101_setting extends Migration
             'name' => 'app::language',
             'label' => 'Language',
             'value' => 'en-US',
-            'type' => Setting::TYPE_DROPDOWNLIST,
+            'type' => Form::TYPE_DROPDOWNLIST,
             'config' => json_encode([ 'en-US' => 'English','tr-TR' => 'Turkish'])
         ]);
 
@@ -45,7 +45,7 @@ class m010101_010101_setting extends Migration
             'name' => 'page::home',
             'label' => 'Home Page',
             'value' => '0',
-            'type' => Setting::TYPE_DROPDOWNLIST,
+            'type' => Form::TYPE_DROPDOWNLIST,
             'config' => json_encode([ 0 => 'Please Select'])
         ]);
 
@@ -54,7 +54,7 @@ class m010101_010101_setting extends Migration
             'name' => 'page::signup',
             'label' => 'Signup Page',
             'value' => '1',
-            'type' => Setting::TYPE_RADIOLIST,
+            'type' => Form::TYPE_RADIOLIST,
             'config' => json_encode([ 1 => 'Show', 0 => 'Hide'])
         ]);
 
@@ -63,7 +63,7 @@ class m010101_010101_setting extends Migration
             'name' => 'page::about',
             'label' => 'About Page',
             'value' => '1',
-            'type' => Setting::TYPE_RADIOLIST,
+            'type' => Form::TYPE_RADIOLIST,
             'config' => json_encode([ 1 => 'Show', 0 => 'Hide'])
         ]);
 
@@ -72,7 +72,7 @@ class m010101_010101_setting extends Migration
             'name' => 'page::login',
             'label' => 'Login Page',
             'value' => '1',
-            'type' => Setting::TYPE_RADIOLIST,
+            'type' => Form::TYPE_RADIOLIST,
             'config' => json_encode([ 1 => 'Show', 0 => 'Hide'])
         ]);
 
@@ -81,8 +81,26 @@ class m010101_010101_setting extends Migration
             'name' => 'page::contact',
             'label' => 'Contact Page',
             'value' => '1',
-            'type' => Setting::TYPE_RADIOLIST,
+            'type' => Form::TYPE_RADIOLIST,
             'config' => json_encode([ 1 => 'Show', 0 => 'Hide'])
+        ]);
+
+        $this->insert('setting', [
+            'category' => 'site',
+            'name' => 'api::signup',
+            'label' => 'API Signup',
+            'value' => '1',
+            'type' => Form::TYPE_RADIOLIST,
+            'config' => json_encode([ 1 => 'Allow', 0 => 'Deny'])
+        ]);
+
+        $this->insert('setting', [
+            'category' => 'site',
+            'name' => 'api::login',
+            'label' => 'API Login',
+            'value' => '1',
+            'type' => Form::TYPE_RADIOLIST,
+            'config' => json_encode([ 1 => 'Allow', 0 => 'Deny'])
         ]);
 
         $this->insert('setting', [
@@ -90,7 +108,7 @@ class m010101_010101_setting extends Migration
             'name' => 'email::address',
             'label' => 'Email Address',
             'value' => 'info@portalium.dev',
-            'type' => Setting::TYPE_INPUT,
+            'type' => Form::TYPE_INPUT,
             'config' => 'email'
         ]);
 
@@ -99,7 +117,7 @@ class m010101_010101_setting extends Migration
             'name' => 'email::displayname',
             'label' => 'Email Display Name',
             'value' => 'Portal',
-            'type' => Setting::TYPE_INPUTTEXT,
+            'type' => Form::TYPE_INPUTTEXT,
             'config' => ''
         ]);
 
@@ -108,7 +126,7 @@ class m010101_010101_setting extends Migration
             'name' => 'smtp::server',
             'label' => 'SMTP Server',
             'value' => 'smtp.gmail.com',
-            'type' => Setting::TYPE_INPUTTEXT,
+            'type' => Form::TYPE_INPUTTEXT,
             'config' => ''
         ]);
 
@@ -117,7 +135,7 @@ class m010101_010101_setting extends Migration
             'name' => 'smtp::port',
             'label' => 'SMTP Port',
             'value' => '465',
-            'type' => Setting::TYPE_INPUTTEXT,
+            'type' => Form::TYPE_INPUTTEXT,
             'config' => ''
         ]);
 
@@ -126,7 +144,7 @@ class m010101_010101_setting extends Migration
             'name' => 'smtp::username',
             'label' => 'SMTP Username',
             'value' => '',
-            'type' => Setting::TYPE_INPUTTEXT,
+            'type' => Form::TYPE_INPUTTEXT,
             'config' => ''
         ]);
 
@@ -135,7 +153,7 @@ class m010101_010101_setting extends Migration
             'name' => 'smtp::password',
             'label' => 'SMTP Password',
             'value' => '',
-            'type' => Setting::TYPE_INPUTPASSWORD,
+            'type' => Form::TYPE_INPUTPASSWORD,
             'config' => ''
         ]);
 
@@ -144,8 +162,25 @@ class m010101_010101_setting extends Migration
             'name' => 'smtp::encryption',
             'label' => 'SMTP Encryption',
             'value' => 'ssl',
-            'type' => Setting::TYPE_RADIOLIST,
+            'type' => Form::TYPE_RADIOLIST,
             'config' => json_encode(['ssl' => 'SSL','tls' => 'TLS'])
+        ]);
+
+        $this->insert('setting', [
+            'category' => 'site',
+            'name' => 'admin::user',
+            'label' => 'Admin User',
+            'value' => '0',
+            'type' => Form::TYPE_DROPDOWNLIST,
+            'config' => json_encode([
+                'model' => [
+                    'class' => 'portalium\user\models\User', 
+                    'map' => [
+                        'key' => 'id' ,
+                        'value' => 'username'
+                    ]
+                ]
+            ])
         ]);
 
     }
