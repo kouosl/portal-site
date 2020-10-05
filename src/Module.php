@@ -26,6 +26,15 @@ class Module extends \portalium\base\Module
         ]);
     }
 
+    public function registerComponents()
+    {
+        return [
+            'theme' => [
+                'class' => 'portalium\theme\Theme'
+            ]
+        ];
+    }
+
     public static function t($message, array $params = [])
     {
         return parent::coreT('site', $message, $params);
